@@ -22,10 +22,16 @@
 #   picam2.close()
 
 import cv2
+import os
 from ultralytics import YOLO
 
-# 1. YOLO11의 가장 가볍고 빠른 Nano 모델 로드 (최초 실행 시 가중치 파일이 자동 다운로드 됨)
-model = YOLO("yolo11n.pt")
+# 현재 실행 중인 스크립트 파일(.py)의 절대 경로 폴더 알아내기
+current_dir = os.path.dirname(os.path.abspath(__file__))
+# 현재 폴더 경로에 "best.pt" 파일명 결합
+model_path = os.path.join(current_dir, "best.pt")
+
+# 동적으로 생성한 절대 경로를 사용해 모델 로드
+model = YOLO(model_path)
 
 # 노트북 기본 웹캠 연결
 cap = cv2.VideoCapture(0)
@@ -44,7 +50,7 @@ try:
         
         # 2. YOLO11 모델에게 프레임을 던져주고 인식 결과(박스, 확률)를 받아오기
         # conf=0.5 옵션: AI가 50% 이상 확신하는 객체만 화면에 표시
-        results = model.predict(source=frame, show=False, conf=0.5)
+        results = model.predict(source=frame, show=False, conf=0.75)
         
         # 3. 인식 결과(테두리 박스와 이름)가 그려진 이미지 데이터 추출
         annotated_frame = results[0].plot()
