@@ -50,7 +50,8 @@ if __name__ == '__main__':
 
     results = model.train(
         data=f"{recycle_dataset.location}/data.yaml",
-        epochs=30,      
+        epochs=70, 
+        patience=20,     
         
         # ⚠️ [중요] GTX 1650 (4GB VRAM) 최적화 세팅
         imgsz=640,       # 해상도 하향 조정 (1024 -> 640)
@@ -59,11 +60,11 @@ if __name__ == '__main__':
         workers=0,       # 윈도우 환경 멀티프로세싱 충돌 방지
         
         # === 데이터 증강(Augmentation) 파라미터 ===
-        hsv_v=0.5,       
-        degrees=15.0,    
+        hsv_v=0.2,       
+        degrees=10.0,    
         translate=0.1,   
         fliplr=0.5,      
-        mosaic=1.0,      
-        erasing=0.2      
+        mosaic=0.0,      
+        erasing=0.0      
     )
     print("✅ 학습이 완료되었습니다! 현재 폴더의 runs/detect/train/weights 에서 best.pt를 확인하세요.")
